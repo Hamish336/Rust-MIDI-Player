@@ -1,0 +1,12 @@
+py -m PyInstaller --noconfirm --clean --windowed ^
+--name "Rust MIDI Player" ^
+--icon "assets\exeicon.ico" ^
+--add-data "assets\appicon.ico;assets" ^
+--hidden-import=tkinterdnd2 ^
+--hidden-import=keyboard ^
+--hidden-import=mido ^
+--hidden-import=mido.backends.rtmidi ^
+--hidden-import=rtmidi ^
+--collect-all tkinterdnd2 ^
+--collect-all rtmidi ^
+Rust_MIDI_Player.py

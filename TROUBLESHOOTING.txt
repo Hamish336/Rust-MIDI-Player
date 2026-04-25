@@ -1,0 +1,256 @@
+# Rust MIDI Player Troubleshooting
+
+---
+
+## Quick Topics
+
+- Critical MIDI port rule
+- Rust not receiving MIDI
+- MIDI port not showing
+- MIDI stops working after app restart
+- Rust optimization order
+- Rust garbage collection commands
+- Borderless mode with -popupwindow
+- Alt-tab stutters and Band sync timing
+- Global shortcuts
+- Song sounds wrong or doubled
+- Favorites / saved mutes
+- Playlist mute memory
+
+---
+
+## 1. Critical MIDI Port Rule
+
+Select the correct MIDI port before pressing Play.
+
+Changing MIDI ports after playback has started usually requires restarting the app before Rust detects MIDI properly again.
+
+If Rust still does not receive MIDI after restarting the app, restart Rust as well.
+
+---
+
+## 2. Rust Not Receiving MIDI Input
+
+Check these first:
+
+- Confirm LoopMIDI is running.
+- Confirm the virtual MIDI port exists in LoopMIDI.
+- Confirm the same MIDI port is selected in Rust and in Rust MIDI Player.
+- Restart the app if you changed ports after playback started.
+- Restart Rust if the app was restarted and Rust no longer detects MIDI input.
+
+---
+
+## 3. MIDI Port Not Showing / Not Detected
+
+- Make sure LoopMIDI is running before opening the app.
+- Restart Rust MIDI Player.
+- Restart your PC if the port still does not appear.
+- You can also restart the Windows MIDI Service:
+
+```text
+Win + R
+services.msc
+Windows MIDI Service
+Restart
+```
+
+---
+
+## 4. MIDI Stops Working After Restarting the App
+
+The app uses a soft-close / reconnect process to reduce this problem.
+
+Rust may still occasionally lose MIDI input after the app has been restarted, especially if playback has already occurred.
+
+If this happens, restart Rust to restore MIDI detection.
+
+---
+
+## 5. Rust Optimization Order
+
+If playback feels rough, start here:
+
+1. Set a larger Rust `gc.buffer` value.
+2. Try Rust borderless mode using `-popupwindow`.
+3. Lower Rust settings if the game is already struggling.
+4. Avoid heavy actions during playback.
+5. Try disabling Global Shortcuts if alt-tabbing causes stutters.
+6. Try a slower app refresh rate, such as 250 ms or 500 ms.
+7. Optionally give Rust higher priority in Task Manager.
+
+The app cannot stop Rust garbage collection or game hitches, but the MIDI engine is designed to keep playback timing anchored to real time.
+
+---
+
+## 6. Rust Garbage Collection (GC) Stutters
+
+Rust may briefly freeze when its own garbage collection runs. This is controlled by Rust, not by the MIDI app.
+
+The most useful first step is usually increasing Rust's GC buffer so garbage collection happens less often.
+
+Open the Rust console with `F1`. These commands are entered into Rust, not into the MIDI app.
+
+### Manual Garbage Collection
+
+Use before a song or during safe downtime:
+
+```text
+gc.collect
+```
+
+Do not spam `gc.collect` during songs.
+
+### GC Buffer Examples
+
+```text
+gc.buffer 1024   = 1 GB buffer. Safer starting point for 8-16 GB RAM.
+gc.buffer 2048   = 2 GB buffer. Good general test value for 16 GB RAM.
+gc.buffer 4096   = 4 GB buffer. Good starting point for many 32 GB systems.
+gc.buffer 5120   = 5 GB buffer. Optional step between 4-6 GB for 32-48 GB systems.
+gc.buffer 6144   = 6 GB buffer. Optional larger buffer for 32-48 GB systems.
+gc.buffer 8192   = 8 GB buffer. Good starting point for 64 GB systems.
+gc.buffer 12288  = 12 GB buffer. Optional larger buffer for 64 GB+ systems.
+```
+
+Use values that suit your available RAM. Very large values are not always better if your system is already memory-limited.
+
+---
+
+## 7. Borderless Mode With -popupwindow
+
+If alt-tabbing, fullscreen focus changes, or switching windows causes stutters, try launching Rust in borderless mode.
+
+In Steam:
+
+1. Right-click Rust.
+2. Click Properties.
+3. In Launch Options, add:
+
+```text
+-popupwindow
+```
+
+This forces Rust into a borderless window style. It can make alt-tabbing smoother and may reduce focus-change stutters on some systems.
+
+---
+
+## 8. Alt-Tab Stutters and Real-Time Playback
+
+Alt-tabbing can affect playback smoothness because Rust may hitch during focus changes. This is especially noticeable if it overlaps with Rust garbage collection.
+
+The MIDI engine is designed to keep the playhead locked to real time, even if Rust visually stutters.
+
+This matters for future Band sync because the app should continue tracking the correct song time instead of drifting every time Rust hitches.
+
+Best practice:
+
+- Avoid alt-tabbing during songs if your system stutters.
+- Try `-popupwindow`.
+- Disable Global Shortcuts if focus changes still feel rough.
+- Avoid resizing, dragging, minimizing, or opening Settings during playback.
+
+---
+
+## 9. Global Shortcuts
+
+Global Shortcuts use a system-wide keyboard hook so Play/Pause, Next, and Previous can work while Rust is focused.
+
+On some systems, this hook can add stutters during focus changes or alt-tabbing.
+
+If alt-tab stutters are excessive:
+
+1. Open Settings.
+2. Disable Global Shortcuts.
+3. Use the app buttons instead.
+
+---
+
+## 10. Rust Settings To Reduce If Needed
+
+If Rust is already struggling, MIDI playback may feel worse during frame drops or GC hitches.
+
+Try lowering settings that increase memory or object load:
+
+- Graphics Quality
+- Object Quality
+- Tree Quality
+- Terrain Quality
+- Shadow Distance
+- Draw Distance
+- Max Gibs
+
+Also close unnecessary background programs before playing.
+
+---
+
+## 11. Optional Task Manager Priority Tuning
+
+If Rust stutters during songs:
+
+1. Open Task Manager.
+2. Go to Details.
+3. Right-click `RustClient.exe`.
+4. Set priority to High.
+5. Optional: set `Rust MIDI Player.exe` to Below normal.
+
+This can help Windows favour Rust while the MIDI app keeps timing anchored to real time.
+
+This can be useful on lower-end systems, single-stick RAM setups, or PCs already close to their performance limit.
+
+---
+
+## 12. Optional App Refresh Rate
+
+In Settings, try:
+
+- 250 ms Balanced
+- 500 ms Performance
+
+This reduces UI refresh work. Playback timing stays anchored to real time.
+
+You can also test 50 ms Quality if you want the smoothest playback counter and want to compare how Rust feels on your system.
+
+---
+
+## 13. Song Sounds Incorrect / Doubled Notes
+
+Some MIDI files contain channels that double notes or trigger unwanted sounds.
+
+Use the Channel Mute buttons to find and mute problem channels.
+
+The number under each channel shows how many notes were found on that channel.
+
+Many songs sound better with one or two channels muted.
+
+Some MIDI files simply do not suit certain Rust instruments. This is outside the app's control, but speed, volume, transpose, and channel mute are included to help make more songs playable.
+
+---
+
+## 14. Avoid Adding Songs During Playback
+
+Adding songs or Favorites scans MIDI files to calculate channel note counts.
+
+This can cause small performance spikes.
+
+Best practice: load, scan, and set up songs first, then start playback.
+
+---
+
+## 15. Favorites / Saved Mutes Missing
+
+Favorites and saved Favorites mute settings are linked to the original MIDI file path.
+
+If you move, rename, or delete a MIDI file after adding it to Favorites, the app may no longer find it.
+
+Keep favorited MIDI files in the same folder/path after adding them to the app.
+
+---
+
+## 16. Playlist Song Mutes Not Remembered After Restart
+
+Playlist-only song mutes are session-based.
+
+They are cleared when the app restarts or when the playlist is cleared.
+
+Favorites keep per-song mute memory permanently unless the file path is changed or removed.

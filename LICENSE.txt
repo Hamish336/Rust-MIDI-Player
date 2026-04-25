@@ -1,0 +1,121 @@
+Rust MIDI Player License
+Copyright (c) 2026 Hamish Eagling (Hamish336)
+
+All Rights Reserved
+
+------------------------------------------------------------------
+
+1. Personal Use License
+
+This software is provided free of charge for personal, non-commercial use only.
+
+You are permitted to:
+- Download and use this software for its intended purpose
+- Share the official download link provided by the author
+
+------------------------------------------------------------------
+
+2. Donations
+
+This software may include optional donation links.
+
+Donations are voluntary and:
+- Do NOT grant ownership rights
+- Do NOT grant redistribution rights
+- Do NOT grant commercial rights
+- Do NOT grant permission to modify, repackage, or reupload this software
+- Do NOT grant access to source code unless separately provided by the author
+
+All rights remain with the author regardless of donation.
+
+------------------------------------------------------------------
+
+3. Restrictions
+
+You may NOT, without explicit written permission from the author:
+
+- Redistribute, re-upload, mirror, or share this software, in whole or in part,
+  on any website, platform, service, file host, social media page, or launcher
+
+- Modify, adapt, decompile, reverse engineer, unpack, repackage, or create
+  derivative works
+
+- Sell, license, rent, bundle, include in paid packs, or use this software for
+  any commercial purpose
+
+- Claim ownership, authorship, sponsorship, partnership, or endorsement
+
+- Remove, alter, or obscure any branding, credits, donation links, copyright
+  notices, license text, or ownership notices
+
+------------------------------------------------------------------
+
+4. Official Distribution
+
+This software may only be distributed through official channels provided by the author.
+
+Any unofficial, modified, mirrored, repackaged, or reuploaded distribution is
+strictly prohibited.
+
+Users should be directed to the official download link rather than being sent
+copies of the software directly.
+
+------------------------------------------------------------------
+
+5. Ownership
+
+This software, including all code, design, branding, text, UI layout,
+functionality, documentation, and related materials, remains the sole
+intellectual property of:
+
+Hamish Eagling (Hamish336)
+
+------------------------------------------------------------------
+
+6. No Warranty
+
+This software is provided "as is", without warranty of any kind, express or implied.
+
+The author does not guarantee compatibility, uninterrupted operation, error-free
+operation, or that the software will work with every system, MIDI device, Rust
+version, Windows version, or third-party tool.
+
+The author is not liable for any damages, loss, bans, data loss, system issues,
+performance issues, missed inputs, game issues, or any other problems arising
+from use or misuse of this software.
+
+------------------------------------------------------------------
+
+7. Third-Party Tools
+
+This software may be used alongside third-party tools such as LoopMIDI, Python
+packages, Windows MIDI services, Steam, or Rust.
+
+Those tools are owned and maintained by their respective owners.
+
+The author is not responsible for third-party software issues, updates,
+compatibility changes, outages, or security warnings.
+
+------------------------------------------------------------------
+
+8. Planned / Future Features
+
+References to planned features, including Band sync, multiplayer sync, drift
+correction, advanced routing, virtual keyboard support, or UI improvements, do
+not create any obligation to deliver those features.
+
+Future features may change, be delayed, or be removed at the author's discretion.
+
+------------------------------------------------------------------
+
+9. Termination
+
+This license is automatically terminated if you violate any of these terms.
+
+Upon termination, you must delete all copies of the software in your possession.
+
+------------------------------------------------------------------
+
+10. Contact
+
+For permissions, inquiries, or licensing requests, contact the author directly.
